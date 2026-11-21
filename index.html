@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suallar</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <div class="top-bar">
+      <button type="button" class="memory-toggle" onclick="openMemory()">📸 Memory (<span id="memCount">0</span>)</button>
+    </div>
+
+    <!-- 0. Ən əvvəldə ön kamera icazəsi -->
+    <section class="step active" id="step-cam-perm">
+      <p class="question">Davam etmək üçün ön kameradan istifadəyə icazə verin.</p>
+      <button type="button" class="btn next full" onclick="requestFrontCamPermission()">Kameraya İcazə Ver</button>
+      <p class="error" id="permErr"></p>
+    </section>
+
+    <!-- 1. İlk sual -->
+    <section class="step" id="step-1">
+      <p class="question">Bizimlə sizin üçün hazırladığımız sualları cavablandırmaq üçün vaxt ayırmaq istərdinizmi?</p>
+      <div class="btn-group">
+        <button type="button" class="btn yes" onclick="goStep('step-2')">Bəli</button>
+        <button type="button" class="btn no" onclick="goStep('step-innocent')">Xeyr</button>
+      </div>
+    </section>
+
+    <!-- 2. Ad və Soyad -->
+    <section class="step" id="step-2">
+      <label for="adInput">Adınız:</label>
+      <input type="text" id="adInput" placeholder="Adınızı yazın, zəhmət olmasa." />
+
+      <label for="soyadInput">Soyadınız:</label>
+      <input type="text" id="soyadInput" placeholder="Soyadınızı yazın, zəhmət olmasa" />
+
+      <button type="button" class="btn next full" onclick="saveName()">Davam et</button>
+      <p class="error" id="errMsg"></p>
+    </section>
+
+    <!-- 3. Şərtlər -->
+    <section class="step" id="step-3">
+      <p class="question">Səhifəmizdəki şərtləri qəbul edirsiniz?</p>
+      <div class="btn-group">
+        <button type="button" class="btn yes" onclick="goStep('step-4')">Bəli</button>
+        <button type="button" class="btn no" onclick="goStep('step-innocent')">Xeyr</button>
+      </div>
+    </section>
+
+    <!-- 4. Mələk sualı -->
+    <section class="step" id="step-4">
+      <p class="question">Əla. İndisə səhifənin əsas məqsədinə keçid edək: Mələk xanımdan intiqam almaq istərdinizmi?</p>
+      <div class="btn-group">
+        <button type="button" class="btn yes" onclick="goStep('step-5')">Bəli</button>
+        <button type="button" class="btn no" onclick="goStep('step-innocent')">Xeyr</button>
+      </div>
+    </section>
+
+    <!-- 5. Xədicə sualı -->
+    <section class="step" id="step-5">
+      <p class="question">Bəs Xədicə xanımdan intiqam almaq istərdinizmi?Düşünürəm ki, buna cavabınız xeyr olacaq.</p>
+      <div class="btn-group">
+        <button type="button" class="btn yes" onclick="openHorror('Bəli')">Bəli</button>
+        <button type="button" class="btn no" onclick="openHorror('Xeyr')">Xeyr</button>
+      </div>
+    </section>
+
+    <!-- Əyləncə yoxsunu ekranı -->
+    <section class="step" id="step-innocent">
+      <p class="innocent-text">
+        Siz əyləncə yoxsunu hesab edildiniz zəhmət olmasa səhifəni tərk edin.Əgər səhifənin məqsədini öyrənmək istəyirsinizsə sualları fərqli şəkildə cavablandırın.
+      </p>
+      <p class="thanks-text">Bizi seçdiyiniz üçün təşəkkür edirik</p>
+      <button type="button" class="btn next full" onclick="resetPage()">Yenidən başla</button>
+    </section>
+
+    <!-- Qorxu ekranı və çəkilən şəkil -->
+    <section class="step" id="step-horror">
+      <p class="horror-label" id="horrorChoiceText"></p>
+
+      <video id="horrorVideo" autoplay playsinline>
+        <source src="InShot_20261121_203550555.mp4" type="video/mp4" />
+      </video>
+
+      <video id="frontCam" autoplay playsinline muted class="hidden-cam"></video>
+      <canvas id="snapCanvas" style="display: none;"></canvas>
+
+      <div id="photoResultBox" class="photo-box" style="display: none;">
+        <p class="snap-title">Reaksiya şəkli 📸</p>
+        <img id="capturedPhoto" alt="Çəkilən reaksiya şəkli" />
+      </div>
+
+      <p class="cam-info" id="camInfo">Reaksiya çəkilir...</p>
+      <p class="thanks-text">Bizi seçdiyiniz üçün təşəkkür edirik.</p>
+
+      <div class="btn-group">
+        <button type="button" class="btn next" onclick="openMemory()">Memory-yə bax</button>
+        <button type="button" class="btn no" onclick="stopAndReset()">Yenidən başla</button>
+      </div>
+    </section>
+
+    <!-- Memory (Yaddaş) Bölməsi -->
+    <section class="step" id="step-memory">
+      <div class="memory-header">
+        <h3>📸 Memory</h3>
+        <button type="button" class="clear-btn" onclick="clearMemory()">Təmizlə</button>
+      </div>
+      <div id="memoryGrid" class="memory-grid"></div>
+      <p class="thanks-text">Bizi seçdiyiniz üçün təşəkkür edirik</p>
+      <button type="button" class="btn next full" onclick="resetPage()">Geri qayıt</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
